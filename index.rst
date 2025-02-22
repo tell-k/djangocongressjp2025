@@ -1,5 +1,5 @@
 ==========================================================
-できる！Djangoでテスト!
+できる！Djangoでテスト!(2025)
 ==========================================================
 
 | tell-k
@@ -66,8 +66,10 @@ TRACERY - システム開発のためのドキュメントサービス
 今日の目標
 =====================================
 
-.. image:: https://dl.dropboxusercontent.com/spa/ghyn87yb4ejn5yy/40dbf595606e4879961ef4a13e5cea84.png
-   :width: 60%
+.. image:: _static/img/kanzenrikai.png
+   :width: 30%
+
+**あーなるほどね。完全に理解した**
 
 主な参考文献
 =====================================
@@ -147,20 +149,20 @@ pytest(pytest-django)
 ===================================
 
 * テストの書きやすさのハードルが低い
-
- *  テ
+  
+ * ツール特有の書き方を覚える必要がない
 
 * 賢いテストランナー
 
- * `pytest` とコマンドを打つだけでテストを自動収集してくれうr
+ * `pytest` とコマンドを打つだけでテストを自動収集してくれる
 
 * 詳細なエラーメッセージ 
   
- * `assert` の挙動がカスタマイズされている
+ * `assert` の挙動がカスタマイズされているのでエラーがみやすい
  
 * 豊富なフィクスチャ機能
 
-  * `pytest`
+  * `pytest-django` に沢山あるのでテストしやすい
 
 
 テスト設置場所
@@ -478,7 +480,7 @@ pytest.mark.django_db
 * **pytest-django** のための設定が必要
 * **pyproject.toml** 等の設定ファイルで **DJANGO_SETTINGS_MODULE** を指定する
 
-.. code-block:: toml
+.. code-block:: ini
 
   [tool.pytest.ini_options]
   DJANGO_SETTINGS_MODULE = "test.settings"
@@ -880,7 +882,6 @@ patch の ハマりポイント
 * patch を同時に複数あてたい
 
   * `contextlib.ExitStack <https://docs.python.jp/3/library/contextlib.html#contextlib.ExitStack>`_
-  * `Python 3.3 からの with 文 <https://atsuoishimoto.hatenablog.com/entry/2013/01/25/000000>`_
 
 可能な限り簡潔に
 ==================================
@@ -928,7 +929,7 @@ patch の ハマりポイント
 * `pytest-cov <https://pypi.org/project/pytest-cov/>`_ は ``coverage`` を ``pytest`` で使えるようにしたライブラリ
 * 不要なカバレッジを計測しないように ``pyproject.tmol`` に除外対象を設定すると良いです
 
-.. code-block:: toml
+.. code-block:: ini
 
   [tool.coverage.report]
   omit = [
@@ -993,7 +994,7 @@ patch の ハマりポイント
 * ``--ff`` ... 直前に失敗したテストを最初に実行する
 * ``-x`` ... テストケースが失敗したらその時点でテストを止める
 
-.. code-block::
+.. code-block:: bash
 
  $ pytest --reuse-db --ff -x apps/account/tests/test_models.py
 
@@ -1029,6 +1030,7 @@ Kent Beck のお言葉
 ===============================
 
 * Webページ や 書籍 の著者の皆さん 本当に ありがとうございます。m(_ _)m
+* 7年後にまたお会いしましょう(テストを書くという仕事があるのか...)
 
 ご静聴ありがとうございました
 ======================================
@@ -1037,6 +1039,37 @@ Kent Beck のお言葉
 ============
 
 * 発表時間が余ってたら話します
+
+テストランダムに実行する(pytest-randomly)
+===================================================
+
+* ``pytest-randomly`` は テストケースをランダムな実行順で実行する
+* テストケース同士が依存していると、デバッグしづらいし、バグになっている可能性がある
+* ランダムに実行すること、実行順に依存していた場合にバグに気づきやすくなります
+* `28:テストの実行順序に依存しないテストを書く <https://jisou-programmer.beproud.jp/%E3%83%A6%E3%83%8B%E3%83%83%E3%83%88%E3%83%86%E3%82%B9%E3%83%88/28-%E3%83%86%E3%82%B9%E3%83%88%E3%81%AE%E5%AE%9F%E8%A1%8C%E9%A0%86%E5%BA%8F%E3%81%AB%E4%BE%9D%E5%AD%98%E3%81%97%E3%81%AA%E3%81%84%E3%83%86%E3%82%B9%E3%83%88%E3%82%92%E6%9B%B8%E3%81%8F.html`>`_
+
+3Aスタイルでテストを書こう
+==============================
+
+* テスト読むことで大まかな仕様を把握できることもあるので可読性は大事です
+* 準備と実行と検証の３つのチャンクに分けてあると良い
+* `Arrange Act Assert <http://wiki.c2.com/?ArrangeActAssert>`_
+* `21:テストケースは準備、実行、検証に分割しよう <https://jisou-programmer.beproud.jp/%E3%83%A6%E3%83%8B%E3%83%83%E3%83%88%E3%83%86%E3%82%B9%E3%83%88/21-%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9%E3%81%AF%E6%BA%96%E5%82%99%E3%80%81%E5%AE%9F%E8%A1%8C%E3%80%81%E6%A4%9C%E8%A8%BC%E3%81%AB%E5%88%86%E5%89%B2%E3%81%97%E3%82%88%E3%81%86.html`>`_
+
+.. code-block:: python
+
+    def test_display_item(self, client, target):
+        # arrange ---
+        item = ItemFactory()
+
+        # act ---
+        res = client.get(target(item.id))
+
+        # assert ---
+        assert item.id == res.context['item'].id
+        assert 200 == res.status_code
+        assertTemplateUsed(res, 'item/detail.html')
+
 
 viewのテストどうしてる？
 ==============================
@@ -1048,8 +1081,6 @@ viewのテストどうしてる？
 
 * HTMLの中身まではあまりテストしない -> HTMLが頻繁に変わると辛いから
 * 複雑なロジックはviewの中にかかない -> 外出してユニットテストを書く
-   * request
-
 
 viewのテストどうしてる？
 ==============================
@@ -1110,14 +1141,15 @@ Django コマンドのテスト
 
 .. code-block:: python
 
+ from django.core.management import call_command
+
  class TestSpamCommand:
 
+     @pytest.fixture
      def target(self):
-         from django.core.management import call_command
 
          def _inner(*args, **kwargs):
             return call_command('spam', *args, **kwargs)
-
          return _inner
 
      def test_spam_command(self, target):
@@ -1144,6 +1176,12 @@ Django コマンドのテスト
 
 * ``settings`` フィクスチャ
 
+.. code-block:: python
+
+  def test_with_specific_settings(settings):
+      settings.USE_TZ = True
+      assert settings.USE_TZ
+
 Celeryの非同期タスクのユニットテスト
 =========================================
 
@@ -1163,36 +1201,22 @@ tox
 
 * https://tox.readthedocs.io/en/latest/
 * Pythonライブラリを複数バージョンでテストするツールです。
-* パッケージングしなくても魅力的。
 * 専用のvirtualenvを作ってくれる。
-* 静的解析ツール(flake8, mypy)と併せて利用できる。
-
-tox の 実行
-=========================================
-
-.. code-block:: bash
-
- $ tox # 全ての testenv が実行される
- $ tox -e flake8 # flake8のtestenvだけ実行される
+* テスト用のタスクとかまとめられる利点などがあります
+* ``tox-uv`` を使うと ``virtualenv`` の代わりに ``uv`` で環境を構築してくれるので速くなります
+* ``nox`` という pythonでかけるtoxみたいなツールも最近人気です。あまり使ったことないです。
 
 テストの高速化
 =========================================
 
 * (特にローカルでは) テストを頻繁に実行するので、可能な限り速くなってほしい
-   * 近年ではマシンスペックの向上や、Dockerコンテナの普及により、ミドルウェアを揃えるコストが格段に低くなったので
-
+   * 近年ではマシンスペックの向上や、Dockerコンテナの普及により、ミドルウェアを揃えるコストが格段に低くなったので、実ミドルウェアでテストしたりもしてます。
 * `Djangoでテストを速くするためにいろいろやってみた <http://y0m0r.hateblo.jp/entry/20130615/1371305730>`_
 
 トピック
 
-* django.test.TestCase -> unittest.TestCaseへの変更
 * sqlite3 の in-meory DBを使う
 * migrations を OFFにする
 * PASSWORD_HASHERSの変更
 * setupTestDataの利用検討
-* python manage.py test の --parallel オプションを使う 
-
-
-TODO settings
-TODO conftest.py
-TODO 3Aスタイル
+* ``pytest-xdist``  で並列実行
