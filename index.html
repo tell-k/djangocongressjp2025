@@ -1,0 +1,1318 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>できる！Djangoでテスト!(2025)</title>
+    <meta name="description" content="DjangoCongress JP 2025 の発表資料です。ユニットテストを中心に、Djangoにおけるテストの始めかた、ツールの導入/使い方など、発表者が普段実践してる内容をお話いたします。" >
+    <link rel="canonical" href="https://tell-k.github.io/djangocongressjp2025" >
+    <script>
+      var notesEnabled =false;
+      var sections = [];
+      var titleNotes = [];
+    </script>
+    <meta charset='utf-8'>
+
+    <meta property="og:title" content="できる！Djangoでテスト!(2025)">
+    <meta property="og:description" content="DjangoCongress JP 2025 の発表資料です。ユニットテストを中心に、Djangoにおけるテストの始めかた、ツールの導入/使い方など、発表者が普段実践してる内容をお話いたします。">
+    <meta property="og:image" content="https://tell-k.github.io/djangocongressjp2025/_static/img/ogp.png">
+    <meta property="og:url" content="https://tell-k.github.io/djangocongressjp2025">
+    <meta property="og:site_name" content="github">
+    <meta property="og:type" content="article">
+    <meta property="article:author" content="https://github.com/tell-k">
+
+    <meta name="twitter:title" content="できる！Djangoでテスト!(2025)">
+    <meta name="twitter:description" content="DjangoCongress JP 2025 の発表資料です。ユニットテストを中心に、Djangoにおけるテストの始めかた、ツールの導入/使い方など、発表者が普段実践してる内容をお話いたします。">
+    <meta name="twitter:image" content="https://tell-k.github.io/djangocongressjp2025/_static/img/ogp.png">
+    <meta name="twitter:card" content="summary_large_image"">
+    <meta name="twitter:site" content="@github">
+    <meta name="twitter:creator" content="@tell_k">
+
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+  </head>
+  <body style='display: none'>
+    
+  <div class="section" id="django-2025">
+<h1>できる！Djangoでテスト!(2025)<a class="headerlink" href="#django-2025" title="Permalink to this headline">¶</a></h1>
+<div class="line-block">
+<div class="line">tell-k</div>
+<div class="line">DjangoCongress JP 2025 (2025.02.22)</div>
+</div>
+<div class="section" id="id1">
+<h2>おまえ誰よ？<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<a class="reference internal image-reference" href="_images/tell-k.png"><img alt="_images/tell-k.png" src="_images/tell-k.png" style="width: 300px;" /></a>
+<ul class="simple">
+<li>tell-k</li>
+<li>ビープラウド所属</li>
+<li>情弱プログラマー</li>
+<li><a class="reference external" href="https://twitter.com/tell_k">https://twitter.com/tell_k</a></li>
+<li><a class="reference external" href="https://tell-k.github.io/djangocongressjp2025/">https://tell-k.github.io/djangocongressjp2025/</a></li>
+</ul>
+</div>
+<div class="section" id="python">
+<h2>ビープラウド- Pythonメインの受託開発<a class="headerlink" href="#python" title="Permalink to this headline">¶</a></h2>
+<div class="figure" id="id69">
+<a class="reference internal image-reference" href="_images/beproud.png"><img alt="_images/beproud.png" src="_images/beproud.png" style="width: 70%;" /></a>
+<p class="caption"><span class="caption-text"><a class="reference external" href="https://www.beproud.jp/">https://www.beproud.jp/</a></span></p>
+</div>
+</div>
+<div class="section" id="connpass-it">
+<h2>connpass - エンジニアをつなぐIT勉強会支援プラットフォーム<a class="headerlink" href="#connpass-it" title="Permalink to this headline">¶</a></h2>
+<div class="figure" id="id70">
+<a class="reference internal image-reference" href="_images/connpass.png"><img alt="_images/connpass.png" src="_images/connpass.png" style="width: 70%;" /></a>
+<p class="caption"><span class="caption-text"><a class="reference external" href="https://connpass.com/">https://connpass.com/</a></span></p>
+</div>
+</div>
+<div class="section" id="pyq-python">
+<h2>PyQ - Pythonオンライン学習サービス<a class="headerlink" href="#pyq-python" title="Permalink to this headline">¶</a></h2>
+<div class="figure" id="id71">
+<a class="reference internal image-reference" href="_images/pyq.png"><img alt="_images/pyq.png" src="_images/pyq.png" style="width: 70%;" /></a>
+<p class="caption"><span class="caption-text"><a class="reference external" href="https://pyq.jp/">https://pyq.jp/</a></span></p>
+</div>
+</div>
+<div class="section" id="tracery">
+<h2>TRACERY - システム開発のためのドキュメントサービス<a class="headerlink" href="#tracery" title="Permalink to this headline">¶</a></h2>
+<div class="figure" id="id72">
+<a class="reference internal image-reference" href="_images/tracery.png"><img alt="_images/tracery.png" src="_images/tracery.png" style="width: 70%;" /></a>
+<p class="caption"><span class="caption-text"><a class="reference external" href="https://tracery.jp/">https://tracery.jp/</a></span></p>
+</div>
+</div>
+<div class="section" id="id2">
+<h2>目的/動機<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><strong>7年前(2018年)</strong> にも同じテーマで発表させていただきました</li>
+<li>テストに対する方針などの基本的な部分は変わらないものの、 <strong>ツールや開発を取り巻く環境</strong> は大きく様変わりしました</li>
+<li>たまに <strong>「参考になりました」</strong> と言ってもらうことがあるので、アップデートしておきたいと思いました</li>
+</ul>
+</div>
+<div class="section" id="id3">
+<h2>対象<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Djangoをはじめようとしてる人</li>
+<li>ユニットテストとかをどうやってるのか知りたい人</li>
+<li>ある日、突然「 <strong>いい感じにテスト書いて</strong> 」と丸投げされて困惑してる人</li>
+</ul>
+</div>
+<div class="section" id="id4">
+<h2>今日の目標<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
+<a class="reference internal image-reference" href="_images/kanzenrikai.png"><img alt="_images/kanzenrikai.png" src="_images/kanzenrikai.png" style="width: 30%;" /></a>
+<p><strong>あーなるほどね。完全に理解した</strong></p>
+</div>
+<div class="section" id="id5">
+<h2>主な参考文献<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="https://www.amazon.co.jp/dp/4274217884">テスト駆動開発</a></li>
+<li><a class="reference external" href="http://xunitpatterns.com/">xUnit Test Patterns</a></li>
+<li><a class="reference external" href="https://www.amazon.co.jp/dp/4048931113">エキスパートPythonプログラミング改訂4版</a></li>
+<li><a class="reference external" href="https://www.amazon.co.jp/dp/B0CV9MSHZK">Pythonプロフェッショナルプログラミング 第4版</a></li>
+<li><a class="reference external" href="https://jisou-programmer.beproud.jp/%E3%83%A6%E3%83%8B%E3%83%83%E3%83%88%E3%83%86%E3%82%B9%E3%83%88/index.html">自走プログラマー</a></li>
+<li><a class="reference external" href="http://docs.pylonsproject.jp/en/latest/community/testing.html">Pylons 単体テストガイドライン</a><ul>
+<li><a class="reference external" href="http://pelican.aodag.jp/xiao-guo-de-naunittest-mataha-callfutnomi-mi.html">効果的なunittest - または、callFUTの秘密</a></li>
+</ul>
+</li>
+<li>この辺から用語/トピックをピックアップします。</li>
+</ul>
+</div>
+<div class="section" id="id8">
+<h2>前提&amp;対象外<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>非機能要件や受け入れテストの等の話はしません。</li>
+<li>テスト駆動開発そのものについては話しません。</li>
+<li>3rd Party ライブラリではなく、一般的なDjangoプロジェクトを対象にしています</li>
+</ul>
+</div>
+<div class="section" id="id9">
+<h2>テストの種類<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>ユニットテスト &lt;- <strong>ほとんどこれの話</strong><ul>
+<li>個々の関数やクラスをテストし、出力結果が予想通りであることを確認するテストです。</li>
+</ul>
+</li>
+<li>統合テスト<ul>
+<li>いくつかのモジュールを組み合わせて予想通りに動作するか確認するテスト。</li>
+</ul>
+</li>
+<li>機能テスト<ul>
+<li>ユーザーから見える範囲での機能を（例えばブラウザを使って）テストします。確実に想定した動作をするかといった内部構造は考慮しません。</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="id10">
+<h2>ユニットテストに期待すること<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>実装が意図した通りに動くか素早く確認できること</li>
+<li>不安なくリファクタリングを始められるようになること</li>
+<li>テストコード自体が簡単なドキュメントの役割を果たしてくれること</li>
+</ul>
+<p><strong>「自分が書いたコードが期待通りに動いている」ことを確認する</strong></p>
+</div>
+<div class="section" id="developer-testing">
+<h2>Developer Testing<a class="headerlink" href="#developer-testing" title="Permalink to this headline">¶</a></h2>
+<div class="figure" id="id73">
+<a class="reference internal image-reference" href="_images/TH400_tdd03.png"><img alt="_images/TH400_tdd03.png" src="_images/TH400_tdd03.png" style="width: 70%;" /></a>
+<p class="caption"><span class="caption-text">via. <a class="reference external" href="http://gihyo.jp/dev/serial/01/tdd/0003">第3回　「テスト」という言葉について</a></span></p>
+</div>
+</div>
+<div class="section" id="id12">
+<h2>目次<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>pytest(pytest-django)</li>
+<li>テスト設置場所</li>
+<li>テストケースを書く</li>
+<li>テストを実行する</li>
+<li>フィクスチャー</li>
+<li>モック</li>
+<li>コードカバレッジ</li>
+<li>雑多なネタ</li>
+<li>まとめ</li>
+</ul>
+</div>
+<div class="section" id="pytest-pytest-django">
+<h2>pytest(pytest-django)<a class="headerlink" href="#pytest-pytest-django" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>2018年当時もすでに <code class="docutils literal notranslate"><span class="pre">pytest</span></code> は人気のライブラリでした</li>
+<li>だた <code class="docutils literal notranslate"><span class="pre">pytest</span></code> および <code class="docutils literal notranslate"><span class="pre">pytest-django</span></code> を採用してるプロジェクトが私の周りではあまりありませんでした</li>
+<li>ですが2025年現在では <strong>pytestを使ってないプロジェクトをほぼ見ない</strong>  という状況になりました</li>
+<li>Pythonでテストを書くためのデファクトスタンダードになった印象です</li>
+</ul>
+</div>
+<div class="section" id="pytest">
+<h2>なぜ pytest なのか？<a class="headerlink" href="#pytest" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>テストの書きやすさのハードルが低い</li>
+</ul>
+<blockquote>
+<div><ul class="simple">
+<li>ツール特有の書き方を覚える必要がない</li>
+</ul>
+</div></blockquote>
+<ul class="simple">
+<li>賢いテストランナー</li>
+</ul>
+<blockquote>
+<div><ul class="simple">
+<li><cite>pytest</cite> とコマンドを打つだけでテストを自動収集してくれる</li>
+</ul>
+</div></blockquote>
+<ul class="simple">
+<li>詳細なエラーメッセージ</li>
+</ul>
+<blockquote>
+<div><ul class="simple">
+<li><cite>assert</cite> の挙動がカスタマイズされているのでエラーがみやすい</li>
+</ul>
+</div></blockquote>
+<ul class="simple">
+<li>豊富なフィクスチャ機能<ul>
+<li><cite>pytest-django</cite> に沢山あるのでテストしやすい</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="id13">
+<h2>テスト設置場所<a class="headerlink" href="#id13" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Djagnoアプリの直下に <code class="docutils literal notranslate"><span class="pre">tests</span></code> パッケージを用意</li>
+<li>アプリ内のモジュールに対応する、モジュールを作成する</li>
+<li>厳格にルールがあるわけではなく外出しする人もいます</li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>spam
+   ├── __init__.py
+   ├── admin.py
+   ├── apps.py
+   ├── forms.py
+   ├── models.py
+   ├── utils.py
+   ├── urls.py
+   ├── views.py
+   └── tests &lt; -- here
+      ├── __init__.py
+      ├── test_admin.py
+      ├── test_forms.py
+      ├── test_models.py
+      ├── test_utils.py
+      └── test_views.py
+</pre></div>
+</div>
+</div>
+<div class="section" id="id14">
+<h2>テストケースを書く<a class="headerlink" href="#id14" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="id15">
+<h2>単純な関数をテストしたい<a class="headerlink" href="#id15" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>例えば以下のような関数をテストしたい</li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># spam/utils.py ----</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">date</span>
+
+<span class="k">def</span> <span class="nf">diff_days</span><span class="p">(</span><span class="n">from_date</span><span class="p">:</span> <span class="n">date</span><span class="p">,</span> <span class="n">to_date</span><span class="p">:</span> <span class="n">date</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span> <span class="o">|</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; 日付の差分日数を返す &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">from_date</span> <span class="o">&gt;=</span> <span class="n">to_date</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">None</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">to_date</span> <span class="o">-</span> <span class="n">from_date</span><span class="p">)</span><span class="o">.</span><span class="n">days</span>
+
+<span class="c1"># Usage --</span>
+<span class="n">date1</span> <span class="o">=</span> <span class="n">date</span><span class="p">(</span><span class="mi">2025</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">date2</span> <span class="o">=</span> <span class="n">date</span><span class="p">(</span><span class="mi">2025</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">diff_days</span><span class="p">(</span><span class="n">date1</span><span class="p">,</span> <span class="n">date2</span><span class="p">))</span> <span class="c1"># =&gt; 5</span>
+<span class="k">print</span><span class="p">(</span><span class="n">diff_days</span><span class="p">(</span><span class="n">date2</span><span class="p">,</span> <span class="n">date1</span><span class="p">))</span> <span class="c1"># =&gt; None</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="unittest">
+<h2>unittestの場合<a class="headerlink" href="#unittest" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># spam/tests/test_utils.py ----</span>
+<span class="kn">import</span> <span class="nn">unittest</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">date</span>
+
+<span class="k">class</span> <span class="nc">TestDiffDays</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">_callFUT</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">from_date</span><span class="p">,</span> <span class="n">to_date</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">spam</span> <span class="kn">import</span> <span class="n">diff_days</span>
+        <span class="k">return</span> <span class="n">diff_days</span><span class="p">(</span><span class="n">from_date</span><span class="p">,</span> <span class="n">to_date</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">test_valid_case</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">actual</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_callFUT</span><span class="p">(</span><span class="n">date</span><span class="p">(</span><span class="mi">2018</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">date</span><span class="p">(</span><span class="mi">2018</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">actual</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">test_none_case</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">actual</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_callFUT</span><span class="p">(</span><span class="n">date</span><span class="p">(</span><span class="mi">2018</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="n">date</span><span class="p">(</span><span class="mi">2018</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsNone</span><span class="p">(</span><span class="n">actual</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id16">
+<h2>pytestの場合<a class="headerlink" href="#id16" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># spam/tests/test_utils.py ----</span>
+<span class="kn">import</span> <span class="nn">pytest</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">date</span>
+
+<span class="k">class</span> <span class="nc">TestDiffDays</span><span class="p">:</span> <span class="c1"># &lt;- 継承不要</span>
+
+    <span class="nd">@pytest.fixture</span>
+    <span class="k">def</span> <span class="nf">target</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">spam</span> <span class="kn">import</span> <span class="n">diff_days</span>
+        <span class="k">return</span> <span class="n">diff_days</span>
+
+    <span class="k">def</span> <span class="nf">test_valid_case</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
+        <span class="n">actual</span> <span class="o">=</span> <span class="n">target</span><span class="p">(</span><span class="n">date</span><span class="p">(</span><span class="mi">2018</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">date</span><span class="p">(</span><span class="mi">2018</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+        <span class="k">assert</span> <span class="mi">5</span> <span class="o">==</span> <span class="n">actual</span> <span class="c1"># &lt;- assert でOK</span>
+
+    <span class="k">def</span> <span class="nf">test_none_case</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
+        <span class="n">actual</span> <span class="o">=</span> <span class="n">target</span><span class="p">(</span><span class="n">date</span><span class="p">(</span><span class="mi">2018</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="n">date</span><span class="p">(</span><span class="mi">2018</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="k">assert</span> <span class="n">actual</span> <span class="ow">is</span> <span class="bp">None</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id17">
+<h2>書き方がシンプルになる<a class="headerlink" href="#id17" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>継承せずに素のPythonクラスをテストケースにできる</li>
+<li><code class="docutils literal notranslate"><span class="pre">assert</span></code> の挙動が変えられてるので、失敗した時の差分がとても見やすい<ul>
+<li><code class="docutils literal notranslate"><span class="pre">assertXXXX</span></code> のメソッド群を覚える必要がない</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="id18">
+<h2>Pylons 単体テストガイドライン<a class="headerlink" href="#id18" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Pylons Project の公開している単体テストガイドライン<ul>
+<li><a class="reference external" href="http://docs.pylonsproject.jp/en/latest/community/testing.html">Pylons 単体テストガイドライン</a></li>
+<li>Pythonでテストを書く時の指針として簡潔、わかりやすくまとまっている</li>
+<li>テストについて聞かれた時に良くおすすめしています</li>
+</ul>
+</li>
+<li>ここでは以下のルールに沿っています。<ul>
+<li><a class="reference external" href="http://docs.pylonsproject.jp/en/latest/community/testing.html#id3">ルール: テスト対象のモジュールをテストモジュールのスコープでインポートしない</a></li>
+<li><a class="reference external" href="http://docs.pylonsproject.jp/en/latest/community/testing.html#id3">ルール: 各テストケースメソッドは、 1つのことだけをテストする</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="id22">
+<h2>テスト対象をモジュールのスコープでインポートしない<a class="headerlink" href="#id22" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>モジュールのスコープでインポートエラーになると、関係ないテストまで <strong>失敗します</strong></li>
+<li>できる限り他のテストケースに影響を与えない方が良い</li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Pylonsのガイドラインでは `_callFUT` メソッド名</span>
+<span class="c1"># FUT = Function Under the Test = テスト対象の関数</span>
+
+<span class="nd">@pytest.fixture</span>
+<span class="k">def</span> <span class="nf">target</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="kn">from</span> <span class="nn">spam</span> <span class="kn">import</span> <span class="n">diff_days</span>
+    <span class="k">return</span> <span class="n">diff_days</span>
+
+<span class="c1"># キーワード引数として自動的に渡ってくる</span>
+<span class="k">def</span> <span class="nf">test_valid_case</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id23">
+<h2>モジュールの全てのテストが失敗してしまう<a class="headerlink" href="#id23" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Bad ----</span>
+
+<span class="kn">from</span> <span class="nn">spam</span> <span class="kn">import</span> <span class="n">diff_days</span>  <span class="c1"># ImporErrorになるとする</span>
+
+<span class="k">class</span> <span class="nc">TestDiffDays</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="nf">test_valid_case</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<span class="c1"># ↓  関係ないテストも落ちてしまう</span>
+<span class="k">class</span> <span class="nc">TestOther</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="nf">test_other</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id24">
+<h2>テストケースは、 1つのことだけをテストする<a class="headerlink" href="#id24" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>全部のテストパターンをごちゃまぜにしない。</li>
+<li>テストが落ちた時に原因が掴みにくくになる</li>
+<li><a class="reference external" href="https://jisou-programmer.beproud.jp/%E3%83%A6%E3%83%8B%E3%83%83%E3%83%88%E3%83%86%E3%82%B9%E3%83%88/20-1%E3%81%A4%E3%81%AE%E3%83%86%E3%82%B9%E3%83%88%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89%E3%81%A7%E3%81%AF1%E3%81%A4%E3%81%AE%E9%A0%85%E7%9B%AE%E3%81%AE%E3%81%BF%E7%A2%BA%E8%AA%8D%E3%81%99%E3%82%8B.html">20:1つのテストメソッドでは1つの項目のみ確認する</a></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Bad ----</span>
+
+<span class="k">def</span> <span class="nf">test_all_test_cases</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
+    <span class="c1"># from_date &lt; to_date</span>
+    <span class="n">actual</span> <span class="o">=</span> <span class="n">target</span><span class="p">(</span><span class="mi">2018</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">date</span><span class="p">(</span><span class="mi">2018</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+    <span class="k">assert</span> <span class="n">actual</span> <span class="o">==</span> <span class="mi">5</span>
+
+    <span class="c1"># from_date &gt;= to_date</span>
+    <span class="n">actual</span> <span class="o">=</span> <span class="n">target</span><span class="p">(</span><span class="n">date</span><span class="p">(</span><span class="mi">2018</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="n">date</span><span class="p">(</span><span class="mi">2018</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="k">assert</span> <span class="n">actual</span> <span class="ow">is</span> <span class="bp">None</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id26">
+<h2>同値分割/境界値分析<a class="headerlink" href="#id26" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><strong>何を気にしてテストを書くのか？</strong></li>
+<li>同値分割 … テスト結果をグループ化し代表的な条件をピックアップしてテスト</li>
+<li>境界値分析 … テスト結果が変わる境目となる条件をテスト<ul>
+<li>例えば 日付の範囲、数値の範囲</li>
+<li>テストケースが成立するエッジケースをテストする</li>
+<li><strong>境界値は分岐の条件になることも多いのでバグが起こりやすい</strong></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="id27">
+<h2>同値分割/境界値分析<a class="headerlink" href="#id27" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test_boundary_case1</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
+  <span class="c1"># 1が返る境界値をテストする</span>
+  <span class="n">actual</span> <span class="o">=</span> <span class="n">target</span><span class="p">(</span><span class="n">date</span><span class="p">(</span><span class="mi">2018</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">date</span><span class="p">(</span><span class="mi">2018</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+  <span class="k">assert</span> <span class="n">actual</span> <span class="o">==</span> <span class="mi">1</span>
+
+<span class="k">def</span> <span class="nf">test_boundary_case2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
+  <span class="c1"># Noneが返る境界値をテストする</span>
+  <span class="n">actual</span> <span class="o">=</span> <span class="n">target</span><span class="p">(</span><span class="n">date</span><span class="p">(</span><span class="mi">2018</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">date</span><span class="p">(</span><span class="mi">2018</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+  <span class="k">assert</span> <span class="n">actual</span> <span class="ow">is</span> <span class="bp">None</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="assertion-roulette">
+<h2>Assertion Roulette<a class="headerlink" href="#assertion-roulette" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>xUnit Patterns の <a class="reference external" href="http://xunitpatterns.com/Test%20Smells.html">テストの不吉な臭い</a> の一つ</li>
+<li>1つのテストケースで複数の入力パターンをテストしている</li>
+</ul>
+<p>このような場合</p>
+<ul class="simple">
+<li>どのデータが原因でテストが失敗したかわかりにくい</li>
+<li>テスト失敗以後のアサーションが行われない</li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Bad --</span>
+
+<span class="k">def</span> <span class="nf">test_say_hello</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
+
+    <span class="k">assert</span> <span class="n">target</span><span class="p">(</span><span class="bp">None</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;hello tell-k&#39;</span>  <span class="c1"># 1. ここで失敗</span>
+    <span class="k">assert</span> <span class="n">target</span><span class="p">(</span><span class="s1">&#39;hirokiky&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;hello hirokiky&#39;</span> <span class="c1"># 2. 以後のアサーションは無視</span>
+    <span class="k">assert</span> <span class="n">target</span><span class="p">(</span><span class="s1">&#39;django&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;hello django&#39;</span>
+    <span class="k">assert</span> <span class="n">target</span><span class="p">(</span><span class="s1">&#39;kashew&#39;</span><span class="p">)</span> <span class="o">==</span>  <span class="s1">&#39;hello kashew&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="parameterized-test">
+<h2>Parameterized Test<a class="headerlink" href="#parameterized-test" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>複数の入力パターンで同一のテストケースを実行する</li>
+<li><a class="reference external" href="https://docs.pytest.org/en/latest/parametrize.html">pytest.mark.parametrize</a></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Good --</span>
+
+<span class="nd">@pytest.mark.parametrize</span><span class="p">(</span><span class="s2">&quot;input_str,expected&quot;</span><span class="p">,</span> <span class="p">[</span>
+    <span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="s2">&quot;hello tell-k&#39;&quot;</span><span class="p">),</span>  <span class="c1"># このテストが失敗しても他のテストは実行される</span>
+    <span class="p">(</span><span class="s2">&quot;hirokiky&quot;</span><span class="p">,</span> <span class="s2">&quot;hello hirokiky&#39;&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;django&quot;</span><span class="p">,</span> <span class="s2">&quot;hello django&#39;&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;kashew&quot;</span><span class="p">,</span> <span class="s2">&quot;hello kashew&#39;&quot;</span><span class="p">),</span>
+<span class="p">])</span>
+<span class="k">def</span> <span class="nf">test_say_hello</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_str</span><span class="p">,</span> <span class="n">expected</span><span class="p">):</span>
+
+    <span class="k">assert</span> <span class="n">target</span><span class="p">(</span><span class="n">input_str</span><span class="p">)</span> <span class="o">==</span> <span class="n">expected</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><a class="reference external" href="https://t-wada.hatenablog.jp/entry/design-for-testability">現在時刻が関わるユニットテストから、テスト容易性設計を学ぶ</a></li>
+</ul>
+</div>
+<div class="section" id="django">
+<h2>Djangoモデルに依存するテストケース<a class="headerlink" href="#django" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>DjangoモデルつまりDBに依存するようなテスト</li>
+<li><code class="docutils literal notranslate"><span class="pre">pytest.mark.django_db</span></code> というマーカーを利用します。</li>
+<li>このマーカーを利用するとテストケースごとにDBを初期化してくれます</li>
+</ul>
+</div>
+<div class="section" id="pytest-mark-django-db">
+<h2>pytest.mark.django_db<a class="headerlink" href="#pytest-mark-django-db" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">pytest.mark.django_db</span></code> マーカーはデコレーターとして利用できます。</li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pytest</span>
+
+<span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Item</span>
+
+<span class="c1"># ↓ このクラステストケースが実行されるたびにDBをクリアしてくれる</span>
+<span class="nd">@pytest.mark.django_db</span>
+<span class="k">class</span> <span class="nc">TestSample</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="nf">test_one</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;name1&#39;</span><span class="p">)</span>
+
+        <span class="k">assert</span> <span class="mi">1</span> <span class="o">==</span> <span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+
+    <span class="c1"># テストケースが終わるとDBの中身はクリア(rollbackされる)</span>
+    <span class="k">def</span> <span class="nf">test_two</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;name1&#39;</span><span class="p">)</span>
+
+        <span class="k">assert</span> <span class="mi">1</span> <span class="o">==</span> <span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id30">
+<h2>マーカーを書く場所によって挙動が変わる<a class="headerlink" href="#id30" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>マーカーを書く場所によってマーカーの有効範囲を調整できる</li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># モジュール全体でマーカーが利用される</span>
+<span class="n">pytestmark</span> <span class="o">=</span> <span class="n">pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">django_db</span>
+
+<span class="c1"># このクラスのみマーカー適用</span>
+<span class="nd">@pytest.mark.django_db</span>
+<span class="k">class</span> <span class="nc">TestSample</span><span class="p">:</span>
+
+    <span class="c1"># このメソッドのみマーカー適用</span>
+    <span class="nd">@pytest.mark.django_db</span>
+    <span class="k">def</span> <span class="nf">test_one</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;name1&#39;</span><span class="p">)</span>
+
+        <span class="k">assert</span> <span class="mi">1</span> <span class="o">==</span> <span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id31">
+<h2>テストを実行する<a class="headerlink" href="#id31" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><strong>pytest-django</strong> のための設定が必要</li>
+<li><strong>pyproject.toml</strong> 等の設定ファイルで <strong>DJANGO_SETTINGS_MODULE</strong> を指定する</li>
+</ul>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[tool.pytest.ini_options]</span>
+<span class="na">DJANGO_SETTINGS_MODULE</span> <span class="o">=</span> <span class="s">&quot;test.settings&quot;</span>
+<span class="c1"># -- recommended but optional:</span>
+<span class="na">python_files</span> <span class="o">=</span> <span class="s">[&quot;test_*.py&quot;, &quot;*_test.py&quot;, &quot;testing/python/*.py&quot;]</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>あとは実行するだけ( <strong>自動的にテストケースを収集してくれます</strong> )</li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pytest
+</pre></div>
+</div>
+</div>
+<div class="section" id="id32">
+<h2>pytest実行時の注意点<a class="headerlink" href="#id32" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>たまにハマる人がいる注意点</li>
+<li>デフォルトではテストケースには  <code class="docutils literal notranslate"><span class="pre">TestXXX</span></code> という風に <code class="docutils literal notranslate"><span class="pre">Test</span></code> プレフィックスが必要</li>
+<li>関数やメソッドであれば <code class="docutils literal notranslate"><span class="pre">test_</span></code> というプレフィックスが必要<ul>
+<li><a class="reference external" href="https://stackoverflow.com/a/20277099">https://stackoverflow.com/a/20277099</a></li>
+<li><a class="reference external" href="http://pytest.readthedocs.io/en/latest/goodpractices.html#conventions-for-python-test-discovery">http://pytest.readthedocs.io/en/latest/goodpractices.html#conventions-for-python-test-discovery</a></li>
+</ul>
+</li>
+<li><code class="docutils literal notranslate"><span class="pre">XxxTest</span></code> のような名前にしてしまうと無視されてしまう<ul>
+<li>気づかずにテストが通ったと勘違いしてしまう</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="id33">
+<h2>どこまでユニットテストの対象にすべきか?<a class="headerlink" href="#id33" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>自分たちが書いたコードに対してテストを書く</li>
+<li>Djangoやサードパーティのライブラリのテストしない</li>
+<li>テスト対象が依存してる処理/コンポーネントは対象としない<ul>
+<li>個別にユニットテストする</li>
+<li>依存部分はモック(後述)などで置き換える</li>
+</ul>
+</li>
+<li>デバッグ目的のコードは意図的にテストしないこともある</li>
+</ul>
+</div>
+<div class="section" id="id34">
+<h2>フィクスチャー<a class="headerlink" href="#id34" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="id35">
+<h2>フィクスチャー<a class="headerlink" href="#id35" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>テストに必要な状態や条件を用意した環境やデータのこと</li>
+<li><code class="docutils literal notranslate"><span class="pre">pytest.fixture`</span></code> もそのままフィクスチャー</li>
+<li><dl class="first docutils">
+<dt>xunitスタイルの前処理/後処理用のhookも用意されいている</dt>
+<dd><ul class="first last">
+<li><code class="docutils literal notranslate"><span class="pre">setup_method</span></code> … テストケース実行前の処理</li>
+<li><code class="docutils literal notranslate"><span class="pre">teardown_method</span></code>  …  テストケース実行後の処理</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="id36">
+<h2>フィクスチャー<a class="headerlink" href="#id36" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Bad ----</span>
+<span class="k">class</span> <span class="nc">TestDoSomething</span><span class="p">:</span>
+    <span class="nd">@pytest.fixture</span>
+    <span class="k">def</span> <span class="nf">target</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">sample.api</span> <span class="kn">import</span> <span class="n">do_something</span>
+        <span class="k">return</span> <span class="n">do_something</span>
+
+    <span class="k">def</span> <span class="nf">setup_method</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">good_data</span> <span class="o">=</span> <span class="n">make_fixture_data</span><span class="p">(</span><span class="n">good</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span> <span class="c1"># フィクスチャーの生成</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bad_data</span> <span class="o">=</span> <span class="n">make_fixture_data</span><span class="p">(</span><span class="n">bad</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">teardown_method</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">):</span>
+        <span class="n">destory_fixture</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">good_data</span><span class="p">)</span> <span class="c1"># フィクスチャーの破棄</span>
+        <span class="n">destory_fixture</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bad_data</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">test_do_something_ok</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="n">target</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">good_data</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">True</span>
+
+    <span class="k">def</span> <span class="nf">test_do_something_ng</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">False</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="n">target</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bad_data</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">False</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="self">
+<h2>self属性でセットアップを共有しない<a class="headerlink" href="#self" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="http://docs.pylonsproject.jp/en/latest/community/testing.html#self">ガイドライン: self の属性によってではなく、ヘルパーメソッドによってセットアップを共有する</a></li>
+<li>あるテストケースでは必要でも、他のテストケースでは必要ない<ul>
+<li>無駄に生成している</li>
+</ul>
+</li>
+<li>テストケース毎にカスタマイズしづらい</li>
+<li>無駄なフィクスチャー生成が省ければ、テストの実行も早くなる</li>
+</ul>
+</div>
+<div class="section" id="id38">
+<h2>self属性でセットアップを共有しない<a class="headerlink" href="#id38" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Good --</span>
+
+<span class="nd">@pytest.fixture</span>
+<span class="k">def</span> <span class="nf">good_data</span><span class="p">():</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">make_fixture_data</span><span class="p">(</span><span class="n">good</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="k">yield</span> <span class="n">data</span> <span class="c1"># ジェネレータを使うことで後処理を挟める</span>
+    <span class="n">destory_fixture</span><span class="p">(</span><span class="n">good_data</span><span class="p">)</span>
+
+<span class="nd">@pytest.fixture</span>
+<span class="k">def</span> <span class="nf">bad_data</span><span class="p">():</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">make_fixture_data</span><span class="p">(</span><span class="n">bad</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="k">yield</span> <span class="n">data</span>
+    <span class="n">destory_fixture</span><span class="p">(</span><span class="n">bad_data</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">TestDoSomething</span><span class="p">:</span>
+    <span class="nd">@pytest.fixture</span>
+    <span class="k">def</span> <span class="nf">target</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">sample.api</span> <span class="kn">import</span> <span class="n">do_something</span>
+        <span class="k">return</span> <span class="n">do_something</span>
+
+    <span class="k">def</span> <span class="nf">test_do_something_ok</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">good_data</span><span class="p">):</span> <span class="c1"># good_dataのみが生成される</span>
+        <span class="k">assert</span> <span class="n">target</span><span class="p">(</span><span class="n">good_data</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">True</span>
+
+    <span class="k">def</span> <span class="nf">test_do_something_ng</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">bad_data</span><span class="p">):</span> <span class="c1"># bad_dataのみが生成される</span>
+        <span class="k">assert</span> <span class="n">target</span><span class="p">(</span><span class="n">bad_data</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">False</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id39">
+<h2>Djangoモデルのフィクスチャー<a class="headerlink" href="#id39" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="http://factoryboy.readthedocs.io/en/latest/">factory_boy</a></li>
+<li>Djangoモデルのをいい感じに用意してくれる</li>
+<li>Django以外にもSQLAlchemy、MongoEngineなど対応してくれる</li>
+<li>同種のものに  <a class="reference external" href="https://model-bakery.readthedocs.io/en/latest/">Model Bakery</a> がある</li>
+</ul>
+</div>
+<div class="section" id="id40">
+<h2>factory_boy<a class="headerlink" href="#id40" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># sample/tests/factories.py</span>
+<span class="kn">import</span> <span class="nn">factory</span>
+
+<span class="k">class</span> <span class="nc">ItemFactory</span><span class="p">(</span><span class="n">factory</span><span class="o">.</span><span class="n">django</span><span class="o">.</span><span class="n">DjangoModelFactory</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">factory</span><span class="o">.</span><span class="n">Sequence</span><span class="p">(</span><span class="k">lambda</span> <span class="n">n</span><span class="p">:</span> <span class="s1">&#39;name{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+    <span class="n">email</span> <span class="o">=</span> <span class="n">factory</span><span class="o">.</span><span class="n">Sequence</span><span class="p">(</span><span class="k">lambda</span> <span class="n">n</span><span class="p">:</span> <span class="s1">&#39;hoge{}@example.com&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+    <span class="n">price</span> <span class="o">=</span> <span class="mi">100</span>
+    <span class="n">owner</span> <span class="o">=</span> <span class="n">factory</span><span class="o">.</span><span class="n">SubFactory</span><span class="p">(</span><span class="s2">&quot;account.tests.factories.UserFactory&quot;</span><span class="p">)</span>
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="s2">&quot;sample.Item&quot;</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">item</span> <span class="o">=</span> <span class="n">ItemFactory</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="c1"># =&gt; name0</span>
+<span class="k">print</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">user</span><span class="p">)</span> <span class="c1"># =&gt; User object</span>
+
+<span class="c1"># フィールドの値も指定できる</span>
+<span class="n">ItemFactory</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;newitem&#39;</span><span class="p">)</span>
+
+<span class="c1"># 一気に複数オブジェクトを生成することもできる</span>
+<span class="n">ItemFactory</span><span class="o">.</span><span class="n">create_batch</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="factroy-boy-1">
+<h2>factroy_boy のハマりポイント1<a class="headerlink" href="#factroy-boy-1" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>ItemFactoryをいろんなテストケースで共用したとする</li>
+<li>デフォルト値に依存したテストを書いてしまう</li>
+<li><strong>誰かが知らずにデフォルト値を変更するとテストが失敗する</strong></li>
+<li>Fragile Test(Fragile Fixture) … <a class="reference external" href="http://xunitpatterns.com/Test%20Smells.html">テストの不吉な臭い</a><ul>
+<li>フィクスチャの準備をするコードを修正したら、無関係なテストが失敗する</li>
+</ul>
+</li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># テスト対象</span>
+<span class="k">def</span> <span class="nf">get_display_price</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s2">&quot;{}円&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">price</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Bad --</span>
+<span class="k">def</span> <span class="nf">test_display_price</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
+    <span class="n">item</span> <span class="o">=</span> <span class="n">ItemFactory</span><span class="p">()</span>  <span class="c1"># &lt;- ItemFactory.price 100から変更されたらテスト失敗</span>
+    <span class="n">expected</span> <span class="o">=</span> <span class="s1">&#39;100円&#39;</span>
+    <span class="k">assert</span> <span class="n">expected</span> <span class="o">==</span> <span class="n">target</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id42">
+<h2>factroy_boy のハマりポイント1<a class="headerlink" href="#id42" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>テストケースで必要なデータは、テストケース内で生成する</li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Good --</span>
+<span class="k">def</span> <span class="nf">test_display_price</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
+    <span class="n">item</span> <span class="o">=</span> <span class="n">ItemFactory</span><span class="p">(</span><span class="n">price</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span> <span class="c1"># &lt;- 100固定</span>
+    <span class="n">expected</span> <span class="o">=</span> <span class="s1">&#39;100円&#39;</span>
+    <span class="k">assert</span> <span class="n">expected</span> <span class="o">==</span> <span class="n">target</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>デフォルト値に依存しないテストにする</li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Good --</span>
+<span class="k">def</span> <span class="nf">test_display_price</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
+    <span class="n">item</span> <span class="o">=</span> <span class="n">ItemFactory</span><span class="p">()</span>
+    <span class="n">expected</span> <span class="o">=</span> <span class="s1">&#39;{}円&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">price</span><span class="p">)</span>  <span class="c1"># &lt;- item.price を使って期待値を生成</span>
+    <span class="k">assert</span> <span class="n">expected</span> <span class="o">==</span> <span class="n">target</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="factroy-boy-2">
+<h2>factroy_boy のハマりポイント2<a class="headerlink" href="#factroy-boy-2" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><strong>簡単にモデルを生成できるようになっていない</strong></li>
+<li>直接Djangoモデルを使ってるのとあまり変わりがない</li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Bad ----</span>
+<span class="k">def</span> <span class="nf">test_check_hoge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
+    <span class="n">piyo</span> <span class="o">=</span> <span class="n">PiyoFactory</span><span class="p">(</span>
+      <span class="n">name</span><span class="o">=</span><span class="s2">&quot;piyo&quot;</span><span class="p">,</span>
+      <span class="n">attr1</span><span class="o">=</span><span class="s2">&quot;attr1&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">fuga</span> <span class="o">=</span> <span class="n">FugaFactory</span><span class="p">(</span>
+      <span class="n">piyo</span><span class="o">=</span><span class="n">piyo</span><span class="p">,</span>
+      <span class="n">name</span><span class="o">=</span><span class="s2">&quot;fuga&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="c1"># HogeFactoryのモデルが欲しいだけなのに</span>
+    <span class="c1"># 外部キーで繋がるモデルまで用意している</span>
+    <span class="n">hoge</span> <span class="o">=</span> <span class="n">HogeFactory</span><span class="p">(</span>
+      <span class="n">fuga</span><span class="o">=</span><span class="n">fuga</span><span class="p">,</span>
+      <span class="n">name</span><span class="o">=</span><span class="s2">&quot;hoge&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">expected</span> <span class="o">=</span> <span class="s2">&quot;this is valid hoge&quot;</span>
+    <span class="k">assert</span> <span class="n">expected</span> <span class="o">==</span> <span class="n">target</span><span class="p">(</span><span class="n">hoge</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id43">
+<h2>factroy_boy のハマりポイント2<a class="headerlink" href="#id43" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">SubFactory</span></code> や  <code class="docutils literal notranslate"><span class="pre">Sequence</span></code> を活用し <strong>引数なし</strong> でモデルを生成できると良いです。</li>
+<li><strong>テストケースに直接必要ないデータを楽に用意できる</strong> のが大きなメリットです。</li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Bad ----</span>
+<span class="k">def</span> <span class="nf">test_check_hoge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
+
+    <span class="n">hoge</span> <span class="o">=</span> <span class="n">HogeFactory</span><span class="p">(</span>
+      <span class="n">name</span><span class="o">=</span><span class="s2">&quot;hoge&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">expected</span> <span class="o">=</span> <span class="s2">&quot;this is valid hoge&quot;</span>
+    <span class="k">assert</span> <span class="n">expected</span> <span class="o">==</span> <span class="n">target</span><span class="p">(</span><span class="n">hoge</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id44">
+<h2>モック<a class="headerlink" href="#id44" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="id45">
+<h2>モック<a class="headerlink" href="#id45" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>テスト対象が依存してる処理/コンポーネントを置き換える</li>
+<li>例えば、以下のようなものを置き換える<ul>
+<li>構築の準備に手間がかかるオブジェクト</li>
+<li>実際にネットワーク通信が必要になる処理 =&gt; 外部APIとの通信</li>
+<li>テスト実行時に変化する値、日付</li>
+</ul>
+</li>
+<li>xUnit Test Patterns では <strong>Test Double</strong> として分類/整理されている</li>
+<li><a class="reference external" href="http://goyoki.hatenablog.com/entry/20120301/1330608789">xUnit Test PatternsのTest Doubleパターン(Mock、Stub、Fake、Dummy等の定義)</a></li>
+</ul>
+</div>
+<div class="section" id="test-double">
+<h2>Test Double<a class="headerlink" href="#test-double" title="Permalink to this headline">¶</a></h2>
+<div class="figure">
+<a class="reference internal image-reference" href="_images/test_double.gif"><img alt="_images/test_double.gif" src="_images/test_double.gif" style="width: 80%;" /></a>
+</div>
+</div>
+<div class="section" id="id46">
+<h2>Test Double<a class="headerlink" href="#id46" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><strong>間接入力</strong> … テストコードから見えないテスト対象への入力</li>
+<li><strong>間接出力</strong> … テストコードから見えないテスト対象の出力</li>
+</ul>
+<hr class="docutils" />
+<ul class="simple">
+<li><strong>Dummy Object</strong> … テストに影響を与えない代替オブジェクトです。</li>
+<li><strong>Test Stub</strong>    … 間接入力値をテスト対象に返す</li>
+<li><strong>Test Spy</strong>     … 間接出力値を記録/参照可能にする</li>
+<li><strong>Mock Object</strong>  … 間接出力を記録/検証可能にする</li>
+<li><strong>Fake Object</strong>  … 実際のオブジェクトに近い処理をするが、簡易な実装となっている</li>
+</ul>
+<hr class="docutils" />
+<ul class="simple">
+<li>モック(=Test Dobule) の意として話します</li>
+</ul>
+</div>
+<div class="section" id="pytest-mock">
+<h2>pytest-mock<a class="headerlink" href="#pytest-mock" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">pytest-mock</span></code> は <code class="docutils literal notranslate"><span class="pre">unittest.mock</span></code> を <code class="docutils literal notranslate"><span class="pre">pytest</span></code> で使いやすくするラップしたライブラリです。</li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># sample/api.py ---</span>
+<span class="kn">from</span> <span class="nn">item.api</span> <span class="kn">import</span> <span class="n">calc_tax_included_price</span>
+
+<span class="c1"># テスト対象</span>
+<span class="k">def</span> <span class="nf">get_display_price</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
+    <span class="n">price</span> <span class="o">=</span> <span class="n">calc_tax_included_price</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>  <span class="c1"># &lt;- これをモック(Test Stub)に置き換える</span>
+    <span class="k">return</span> <span class="s2">&quot;{}円&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">price</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test_display_price</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">mocker</span><span class="p">):</span> <span class="c1"># &lt;- mocker が自動で渡される</span>
+    <span class="n">item</span> <span class="o">=</span> <span class="n">ItemFactory</span><span class="p">()</span>
+
+    <span class="c1"># patch を通して 108 という間接入力値 をテスト対象(get_display_price) に渡してる</span>
+    <span class="k">with</span> <span class="n">mocker</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span><span class="s1">&#39;sample.api.calc_tax_included_price&#39;</span><span class="p">,</span> <span class="n">return_value</span><span class="o">=</span><span class="mi">108</span><span class="p">)</span> <span class="k">as</span> <span class="n">m</span><span class="p">:</span>
+         <span class="n">expected</span> <span class="o">=</span> <span class="s1">&#39;108円&#39;</span>
+
+         <span class="k">assert</span> <span class="n">expected</span> <span class="o">==</span> <span class="n">target</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>  <span class="c1"># =&gt; OK</span>
+
+         <span class="c1"># calc_tax_included_price に item引数が渡ったかチェック</span>
+         <span class="n">m</span><span class="o">.</span><span class="n">assert_called_with</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="patch">
+<h2>patch の ハマりポイント<a class="headerlink" href="#patch" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">patch</span></code> がうまく当たらないケースがある</li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># egg.py  ---</span>
+<span class="kn">import</span> <span class="nn">spam</span>
+
+<span class="k">def</span> <span class="nf">say_egg</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">spam</span><span class="o">.</span><span class="n">say_spam</span><span class="p">()</span> <span class="c1"># &lt;- patch対象</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">unittest</span> <span class="kn">import</span> <span class="n">mock</span>
+<span class="kn">from</span> <span class="nn">egg</span> <span class="kn">import</span> <span class="n">say_egg</span>
+
+<span class="k">with</span> <span class="n">mock</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span><span class="s1">&#39;spam.say_spam&#39;</span><span class="p">,</span> <span class="n">return_value</span><span class="o">=</span><span class="s2">&quot;Patched!&quot;</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">say_egg</span><span class="p">())</span> <span class="c1"># =&gt; Patched!</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>何の問題もなくパッチできている</li>
+</ul>
+</div>
+<div class="section" id="id47">
+<h2>patch の ハマりポイント<a class="headerlink" href="#id47" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>下記のように書き換えると <strong>patchが失敗する</strong></li>
+</ul>
+<div class="highlight-diff notranslate"><div class="highlight"><pre><span></span># egg.py  ---
+<span class="gd">- import spam</span>
+<span class="gi">+ from spam import say_spam</span>
+
+def echo():
+<span class="gd">-   return spam.say_spam()</span>
+<span class="gi">+   return say_spam()</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">from</span> <span class="pre">import</span></code> で importされたものは、元のモジュールから切り離される</li>
+<li>テスト対象( <code class="docutils literal notranslate"><span class="pre">say_egg</span></code> ) が利用してるものに <code class="docutils literal notranslate"><span class="pre">patch</span></code> をあてる。</li>
+</ul>
+<div class="highlight-diff notranslate"><div class="highlight"><pre><span></span># Good
+
+<span class="gd">- with mock.patch(&#39;spam.say_spam&#39;, return_value=&quot;Patched!&quot;):</span>
+<span class="gi">+ with mock.patch(&#39;egg.say_spam&#39;, return_value=&quot;Patched!&quot;):</span>
+     print(say_egg()) # =&gt; Patched!
+</pre></div>
+</div>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">patch</span></code> の影響下を局所化する意味でも import されてるところで patchする方が良いです。</li>
+</ul>
+</div>
+<div class="section" id="id48">
+<h2>モック その他<a class="headerlink" href="#id48" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>詳しいmockの使いかた</li>
+</ul>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference external" href="http://note.crohaco.net/2015/python-mock/">まだmockで消耗してるの？mockを理解するための3つのポイント</a></li>
+</ul>
+</div></blockquote>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">datetime.now</span></code> はpatchできない</li>
+</ul>
+<blockquote>
+<div><ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">django.util.timezone.now</span></code> は patch可能</li>
+<li><a class="reference external" href="http://blog.amedama.jp/entry/2016/12/06/220000">Python: freezegun で時刻のテストを楽に書く</a></li>
+</ul>
+</div></blockquote>
+<ul class="simple">
+<li>HTTPリクエスト(<code class="docutils literal notranslate"><span class="pre">requests</span></code>)をモックしたい<ul>
+<li><a class="reference external" href="https://pypi.org/project/responses/">Responses</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="id49">
+<h2>モック その他2<a class="headerlink" href="#id49" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Redisをモックしたい<ul>
+<li><a class="reference external" href="https://pypi.org/project/fakeredis/">FakeRedis</a></li>
+</ul>
+</li>
+<li>patch を同時に複数あてたい<ul>
+<li><a class="reference external" href="https://docs.python.jp/3/library/contextlib.html#contextlib.ExitStack">contextlib.ExitStack</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="id50">
+<h2>可能な限り簡潔に<a class="headerlink" href="#id50" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="http://docs.pylonsproject.jp/en/latest/community/testing.html#fixture">ガイドライン: fixture を可能な限り単純にしてください</a></li>
+<li>フィクスチャーやモックは可能限り簡潔にするのが良い</li>
+<li>モックを使いすぎて逆に何をテストしてるのか良くわからなくなってくる</li>
+<li><dl class="first docutils">
+<dt>モック使いすぎ = <strong>設計見直し/リファクタリングのチャンス</strong></dt>
+<dd><ul class="first last">
+<li><a class="reference external" href="https://jisou-programmer.beproud.jp/%E3%83%A6%E3%83%8B%E3%83%83%E3%83%88%E3%83%86%E3%82%B9%E3%83%88/31-%E9%81%8E%E5%89%B0%E3%81%AAmock%E3%82%92%E9%81%BF%E3%81%91%E3%82%8B.html">31:過剰なmockを避ける</a></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="id51">
+<h2>コードカバレッジ<a class="headerlink" href="#id51" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="id52">
+<h2>コードカバレッジ<a class="headerlink" href="#id52" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>テストコードがテスト対象を、どれくらいパスしているか計測したもの</li>
+<li>これを計測しながらユニットテストを書いていくのが個人的におすすめです。</li>
+<li>見るべきポイント<ul>
+<li>テストが意図した通りにパスしてるか</li>
+<li>テストが書かれてない場所がないか確認</li>
+<li>不要なコードをないか(使われてない, 到達不能なコード)</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="id53">
+<h2>コードカバレッジの分類<a class="headerlink" href="#id53" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>C0: 命令網羅(statement coverage)<ul>
+<li>全ての命令を一度は実行する</li>
+</ul>
+</li>
+<li>C1: 分岐網羅(branch coverage)<ul>
+<li>全ての分岐条件をパスする</li>
+</ul>
+</li>
+<li>C2: 条件網羅(condition coverage)<ul>
+<li>全ての条件をパスする</li>
+</ul>
+</li>
+<li>C0/C1 くらいまでならカバレッジツールが計測できる</li>
+</ul>
+</div>
+<div class="section" id="id54">
+<h2>カバレッジの計測ツール<a class="headerlink" href="#id54" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="https://pypi.org/project/pytest-cov/">pytest-cov</a> は <code class="docutils literal notranslate"><span class="pre">coverage</span></code> を <code class="docutils literal notranslate"><span class="pre">pytest</span></code> で使えるようにしたライブラリ</li>
+<li>不要なカバレッジを計測しないように <code class="docutils literal notranslate"><span class="pre">pyproject.tmol</span></code> に除外対象を設定すると良いです</li>
+</ul>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[tool.coverage.report]</span>
+<span class="na">omit</span> <span class="o">=</span> <span class="s">[</span>
+<span class="s">  &quot;*/migrations/*&quot;,</span>
+<span class="s">  &quot;apps/settings/*&quot;,</span>
+<span class="s">  &quot;apps/manage.py&quot;</span>
+<span class="na">]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id55">
+<h2>カバレッジ<a class="headerlink" href="#id55" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>% もみるが、何行目がパスしてないかを良くみます</li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pytest --cov apps --cov-report term-missing
+</pre></div>
+</div>
+<ul class="simple">
+<li>分岐網羅(C1)まで計測したければ <code class="docutils literal notranslate"><span class="pre">--cov-branch</span></code> オプションをつけて実行します</li>
+</ul>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Name                          Stmts   Miss  Cover   Missing
+-----------------------------------------------------------
+account/__init__.py               1      0   100%
+account/admin.py                145     22    85%   19, 24-26, 59, 63-64, 100, 104-105, 137, 141-142, 173, 177-178, 209, 213-214, 247, 251-252
+account/apps.py                   9      0   100%
+account/forms.py                 29      0   100%
+account/models.py               239      0   100%
+account/views.py                150      5    97%   59, 101, 199
+
+〜 省略 〜
+-----------------------------------------------------------
+TOTAL                         28606   1240    96%
+</pre></div>
+</div>
+</div>
+<div class="section" id="id56">
+<h2>対象を絞ってテストする<a class="headerlink" href="#id56" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>どこかで使われていて、たまたまカバレッジが上がってるだけのケース</li>
+<li>対象を絞ってテストすることで…</li>
+</ul>
+<blockquote>
+<div><ul class="simple">
+<li><strong>テストがない</strong> ところがわかる</li>
+<li>素早くテストも終わる</li>
+</ul>
+</div></blockquote>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># 特定のモジュール</span>
+$ pytest apps/account/tests/test_models.py
+
+<span class="c1"># 特定のテストクラス</span>
+$ pytest apps/account/tests/test_models.py::TestSpamClass
+
+<span class="c1"># 特定のテストケース</span>
+$ pytest apps/account/tests/test_models.py::TestSpamClass::test_spam
+</pre></div>
+</div>
+</div>
+<div class="section" id="id57">
+<h2>失敗したテストを最初に実行する<a class="headerlink" href="#id57" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>同僚に教えてもらった、開発中によく使うオプションです。</li>
+<li>開発しながら繰り返しテストする時に素早くテストできるので重宝しています</li>
+<li><code class="docutils literal notranslate"><span class="pre">--reuse-db</span></code> … DBを破棄せずに再利用するオプション</li>
+<li><code class="docutils literal notranslate"><span class="pre">--ff</span></code> … 直前に失敗したテストを最初に実行する</li>
+<li><code class="docutils literal notranslate"><span class="pre">-x</span></code> … テストケースが失敗したらその時点でテストを止める</li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pytest --reuse-db --ff -x apps/account/tests/test_models.py
+</pre></div>
+</div>
+</div>
+<div class="section" id="id58">
+<h2>システム全体での カバレッジ 100% に固執しない<a class="headerlink" href="#id58" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><strong>「カバレッジ100% = テストが書かれている」</strong> ことがわかるだけ</li>
+<li>コードベースが巨大なほど、カバレッジをあげるのは大変になります。</li>
+<li>コード・システムの質は設計の見直し/リファクタリングを繰り返し行うことであがります。</li>
+</ul>
+</div>
+<div class="section" id="id59">
+<h2>先人たちのお言葉<a class="headerlink" href="#id59" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>100％のテストカバレッジを誇りに思うということは、新聞のあらゆる言葉を読むことを誇りに思うようなものです。いくつかは他よりも重要です。(Kent beck)</li>
+<li>カバレッジ解析の価値は何なんだろう？まずは、テストが不十分なコードを見つけるのに役立つ。カバレッジツールをしょっちゅう実行して、テストのないコードを見つけておくのは価値のあることだ。それらのコードがテストされていないことで不安になるだろうか？ (Martin Fowler)</li>
+</ul>
+</div>
+<div class="section" id="id60">
+<h2>まとめ<a class="headerlink" href="#id60" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>後から不安なく、設計を見直したり/リファクタリングできるようにテストを書こう</li>
+<li>まずはシンプルで必要十分なテストを書くところから始めよう</li>
+<li>フィクスチャーやモックのツールを使おう</li>
+<li>先人達の知恵を有効活用しよう</li>
+</ul>
+</div>
+<div class="section" id="kent-beck">
+<h2>Kent Beck のお言葉<a class="headerlink" href="#kent-beck" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Tests are the Programmer’s Stone, transmuting fear into boredom</li>
+<li>テストはプログラマーの石(?)、恐れを退屈に変えてくれます。</li>
+<li><strong>不安が退屈に変わるまでテストしよう</strong></li>
+</ul>
+</div>
+<div class="section" id="id61">
+<h2>参考<a class="headerlink" href="#id61" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Webページ や 書籍 の著者の皆さん 本当に ありがとうございます。m(_ _)m</li>
+<li>7年後にまたお会いしましょう(テストを書くという仕事があるのか…)</li>
+</ul>
+</div>
+<div class="section" id="id62">
+<h2>ご静聴ありがとうございました<a class="headerlink" href="#id62" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="id63">
+<h2>雑多なネタ<a class="headerlink" href="#id63" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>発表時間が余ってたら話します</li>
+</ul>
+</div>
+<div class="section" id="pytest-randomly">
+<h2>テストランダムに実行する(pytest-randomly)<a class="headerlink" href="#pytest-randomly" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">pytest-randomly</span></code> は テストケースをランダムな実行順で実行する</li>
+<li>テストケース同士が依存していると、デバッグしづらいし、バグになっている可能性がある</li>
+<li>ランダムに実行すること、実行順に依存していた場合にバグに気づきやすくなります</li>
+<li><cite>28:テストの実行順序に依存しないテストを書く &lt;https://jisou-programmer.beproud.jp/%E3%83%A6%E3%83%8B%E3%83%83%E3%83%88%E3%83%86%E3%82%B9%E3%83%88/28-%E3%83%86%E3%82%B9%E3%83%88%E3%81%AE%E5%AE%9F%E8%A1%8C%E9%A0%86%E5%BA%8F%E3%81%AB%E4%BE%9D%E5%AD%98%E3%81%97%E3%81%AA%E3%81%84%E3%83%86%E3%82%B9%E3%83%88%E3%82%92%E6%9B%B8%E3%81%8F.html</cite>&gt;`_</li>
+</ul>
+</div>
+<div class="section" id="a">
+<h2>3Aスタイルでテストを書こう<a class="headerlink" href="#a" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>テスト読むことで大まかな仕様を把握できることもあるので可読性は大事です</li>
+<li>準備と実行と検証の３つのチャンクに分けてあると良い</li>
+<li><a class="reference external" href="http://wiki.c2.com/?ArrangeActAssert">Arrange Act Assert</a></li>
+<li><cite>21:テストケースは準備、実行、検証に分割しよう &lt;https://jisou-programmer.beproud.jp/%E3%83%A6%E3%83%8B%E3%83%83%E3%83%88%E3%83%86%E3%82%B9%E3%83%88/21-%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9%E3%81%AF%E6%BA%96%E5%82%99%E3%80%81%E5%AE%9F%E8%A1%8C%E3%80%81%E6%A4%9C%E8%A8%BC%E3%81%AB%E5%88%86%E5%89%B2%E3%81%97%E3%82%88%E3%81%86.html</cite>&gt;`_</li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test_display_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
+    <span class="c1"># arrange ---</span>
+    <span class="n">item</span> <span class="o">=</span> <span class="n">ItemFactory</span><span class="p">()</span>
+
+    <span class="c1"># act ---</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">target</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
+
+    <span class="c1"># assert ---</span>
+    <span class="k">assert</span> <span class="n">item</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">res</span><span class="o">.</span><span class="n">context</span><span class="p">[</span><span class="s1">&#39;item&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">id</span>
+    <span class="k">assert</span> <span class="mi">200</span> <span class="o">==</span> <span class="n">res</span><span class="o">.</span><span class="n">status_code</span>
+    <span class="n">assertTemplateUsed</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="s1">&#39;item/detail.html&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="view">
+<h2>viewのテストどうしてる？<a class="headerlink" href="#view" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">pytest</span></code> に <code class="docutils literal notranslate"><span class="pre">client</span></code> フィクスチャがあるのでそれを使う</li>
+<li>ダミーのリクエストをアプリに対して実行できる</li>
+</ul>
+<p>そもそもviewのテストは</p>
+<ul class="simple">
+<li>HTMLの中身まではあまりテストしない -&gt; HTMLが頻繁に変わると辛いから</li>
+<li>複雑なロジックはviewの中にかかない -&gt; 外出してユニットテストを書く</li>
+</ul>
+</div>
+<div class="section" id="id64">
+<h2>viewのテストどうしてる？<a class="headerlink" href="#id64" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pytest</span>
+<span class="kn">from</span> <span class="nn">pytest_django.asserts</span> <span class="kn">import</span> <span class="n">assertTemplateUsed</span>
+
+<span class="nd">@pytest.mark.django_db</span>
+<span class="k">class</span> <span class="nc">TestItemDetailView</span><span class="p">:</span>
+
+    <span class="nd">@pytest.fixture</span>
+    <span class="k">def</span> <span class="nf">target</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">_inner</span><span class="p">(</span><span class="n">pk</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;item:detail&#39;</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;pk&#39;</span><span class="p">:</span> <span class="n">pk</span><span class="p">})</span>
+        <span class="k">return</span> <span class="n">_inner</span>
+
+    <span class="k">def</span> <span class="nf">test_not_found</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">target</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+        <span class="k">assert</span> <span class="mi">404</span> <span class="o">==</span> <span class="n">res</span><span class="o">.</span><span class="n">status_code</span>
+
+    <span class="k">def</span> <span class="nf">test_display_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
+        <span class="n">item</span> <span class="o">=</span> <span class="n">ItemFactory</span><span class="p">()</span>
+
+        <span class="n">res</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">target</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
+
+        <span class="k">assert</span> <span class="n">item</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">res</span><span class="o">.</span><span class="n">context</span><span class="p">[</span><span class="s1">&#39;item&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">id</span>
+        <span class="k">assert</span> <span class="mi">200</span> <span class="o">==</span> <span class="n">res</span><span class="o">.</span><span class="n">status_code</span>
+        <span class="n">assertTemplateUsed</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="s1">&#39;item/detail.html&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="e">
+<h2>Eメール送信のテスト<a class="headerlink" href="#e" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">pytest</span></code> に <code class="docutils literal notranslate"><span class="pre">mailoutbox</span></code> フィクスチャがあるのでそれを使う</li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.core</span> <span class="kn">import</span> <span class="n">mail</span>
+<span class="kn">from</span> <span class="nn">django.test</span> <span class="kn">import</span> <span class="n">TestCase</span>
+
+<span class="k">class</span> <span class="nc">TestSendEmail</span><span class="p">():</span>
+
+    <span class="k">def</span> <span class="nf">test_send_email</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mailoutbox</span><span class="p">):</span>
+
+        <span class="n">mail</span><span class="o">.</span><span class="n">send_mail</span><span class="p">(</span><span class="s1">&#39;subject&#39;</span><span class="p">,</span>
+                   <span class="s1">&#39;body.&#39;</span><span class="p">,</span>
+                   <span class="s1">&#39;from@example.com&#39;</span><span class="p">,</span>
+                   <span class="p">[</span><span class="s1">&#39;to@example.com&#39;</span><span class="p">],</span> <span class="n">fail_silently</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">mailoutbox</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+        <span class="k">assert</span> <span class="n">mailoutbox</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">subject</span> <span class="o">==</span> <span class="s1">&#39;subject&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id65">
+<h2>Django コマンドのテスト<a class="headerlink" href="#id65" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="https://docs.djangoproject.com/en/2.0/ref/django-admin/#django.core.management.call_command">django.core.management.call_command</a> でテストしている</li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.core.management</span> <span class="kn">import</span> <span class="n">call_command</span>
+
+<span class="k">class</span> <span class="nc">TestSpamCommand</span><span class="p">:</span>
+
+    <span class="nd">@pytest.fixture</span>
+    <span class="k">def</span> <span class="nf">target</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">def</span> <span class="nf">_inner</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+           <span class="k">return</span> <span class="n">call_command</span><span class="p">(</span><span class="s1">&#39;spam&#39;</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">_inner</span>
+
+    <span class="k">def</span> <span class="nf">test_spam_command</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
+       <span class="n">target</span><span class="p">(</span><span class="n">ham</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id66">
+<h2>ログ/標準出力の確認<a class="headerlink" href="#id66" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>明確にチェックしたいデータがあるわけではない場合、ログや標準出力で書き出された内容を確認したい時がある</li>
+<li><code class="docutils literal notranslate"><span class="pre">caplog</span></code> という フィクスチャーでログ出力をチェックできます。</li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test_baz</span><span class="p">(</span><span class="n">caplog</span><span class="p">):</span>
+    <span class="n">func_under_test</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">caplog</span><span class="o">.</span><span class="n">records</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="n">record</span><span class="o">.</span><span class="n">levelname</span> <span class="o">!=</span> <span class="s2">&quot;CRITICAL&quot;</span>
+    <span class="k">assert</span> <span class="s2">&quot;wally&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">caplog</span><span class="o">.</span><span class="n">text</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="settings">
+<h2>テスト用に一時的にsettingsの中身を変更したい<a class="headerlink" href="#settings" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">settings</span></code> フィクスチャ</li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test_with_specific_settings</span><span class="p">(</span><span class="n">settings</span><span class="p">):</span>
+    <span class="n">settings</span><span class="o">.</span><span class="n">USE_TZ</span> <span class="o">=</span> <span class="bp">True</span>
+    <span class="k">assert</span> <span class="n">settings</span><span class="o">.</span><span class="n">USE_TZ</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="celery">
+<h2>Celeryの非同期タスクのユニットテスト<a class="headerlink" href="#celery" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>非同期でジョブが動く</li>
+<li>ちゃんと動かすには Celeryデーモンが必要</li>
+</ul>
+<p>どうすれば良いのか？</p>
+<ul class="simple">
+<li>同期的に実行するオプションがある</li>
+<li><code class="docutils literal notranslate"><span class="pre">CELERY_ALWAYS_EAGER</span> <span class="pre">=</span> <span class="pre">True</span></code></li>
+<li>関数としてそのままジョブの中身が実行される</li>
+<li>celeryデーモンも不要</li>
+<li><a class="reference external" href="http://docs.celeryproject.org/en/3.1/configuration.html#std:setting-CELERY_ALWAYS_EAGER">http://docs.celeryproject.org/en/3.1/configuration.html#std:setting-CELERY_ALWAYS_EAGER</a></li>
+</ul>
+</div>
+<div class="section" id="tox">
+<h2>tox<a class="headerlink" href="#tox" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="https://tox.readthedocs.io/en/latest/">https://tox.readthedocs.io/en/latest/</a></li>
+<li>Pythonライブラリを複数バージョンでテストするツールです。</li>
+<li>専用のvirtualenvを作ってくれる。</li>
+<li>テスト用のタスクとかまとめられる利点などがあります</li>
+<li><code class="docutils literal notranslate"><span class="pre">tox-uv</span></code> を使うと <code class="docutils literal notranslate"><span class="pre">virtualenv</span></code> の代わりに <code class="docutils literal notranslate"><span class="pre">uv</span></code> で環境を構築してくれるので速くなります</li>
+<li><code class="docutils literal notranslate"><span class="pre">nox</span></code> という pythonでかけるtoxみたいなツールも最近人気です。あまり使ったことないです。</li>
+</ul>
+</div>
+<div class="section" id="id67">
+<h2>テストの高速化<a class="headerlink" href="#id67" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><dl class="first docutils">
+<dt>(特にローカルでは) テストを頻繁に実行するので、可能な限り速くなってほしい</dt>
+<dd><ul class="first last">
+<li>近年ではマシンスペックの向上や、Dockerコンテナの普及により、ミドルウェアを揃えるコストが格段に低くなったので、実ミドルウェアでテストしたりもしてます。</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><a class="reference external" href="http://y0m0r.hateblo.jp/entry/20130615/1371305730">Djangoでテストを速くするためにいろいろやってみた</a></li>
+</ul>
+<p>トピック</p>
+<ul class="simple">
+<li>sqlite3 の in-meory DBを使う</li>
+<li>migrations を OFFにする</li>
+<li>PASSWORD_HASHERSの変更</li>
+<li>setupTestDataの利用検討</li>
+<li><code class="docutils literal notranslate"><span class="pre">pytest-xdist</span></code>  で並列実行</li>
+</ul>
+</div>
+</div>
+
+
+  <div id="help">
+      Use the left and right arrow keys or click the left and right
+      edges of the page to navigate between slides.<br>
+      (Press 'H' or navigate to hide this message.)
+  </div>
+  </body>
+  <script type="text/javascript" src="_static/js/initialize.js"></script>
+  <script type="text/javascript" src="_static/js/slides.js"></script>
+</html>
